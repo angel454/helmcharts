@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.flaskApp.name }}
+  labels:
+    app: {{ .Values.flaskApp.name }}
+spec:
+  replicas: {{ .Values.flaskApp.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.flaskApp.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.flaskApp.name }}
+    spec:
+      containers:
+        - name: {{ .Values.flaskApp.containerName }}
+          image: "{{ .Values.flaskApp.image.repository }}:{{ .Values.flaskApp.image.tag }}"
+          env:
+            - name: "FLASK_APP"
+              value: "{{ .Values.flaskApp.values.flaskApp }}"
+            - name: "FLASK_ENV"
+              value: "{{ .Values.flaskApp.values.flaskEnv }}"
+            - name: "FLASK_RUN_HOST"
+              value: "{{ .Values.flaskApp.values.flaskHost }}"
+            - name: "MYSQL_USER"
+              value: "{{ .Values.flaskApp.values.mysqlUser }}"
+            - name: "MYSQL_PASSWORD"
+              value: "{{ .Values.flaskApp.values.mysqlPassword }}"
+            - name: "MYSQL_HOST"
+              value: "{{ .Values.flaskApp.values.mysqlHost }}"
+            - name: "MYSQL_DB"
+              value: "{{ .Values.flaskApp.values.mysqlDatabase }}"

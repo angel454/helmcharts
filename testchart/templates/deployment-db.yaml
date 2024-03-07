@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mysql.name }}
+  labels:
+    app: {{ .Values.mysql.name }}
+spec:
+  replicas: {{ .Values.mysql.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.mysql.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mysql.name }}
+    spec:
+      containers:
+        - name: {{ .Values.mysql.containerName }}
+          image: "{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}"
+          volumeMounts:
+            - mountPath: "/var/lib/mysql"
+              name: {{ .Values.mysql.persistentVolume }}
+          env:
+            - name: "MYSQL_DATABASE"
+              value: "{{ .Values.mysql.values.mysqlDatabase }}"
+            - name: "MYSQL_PASSWORD"
+              value: "{{ .Values.mysql.values.mysqlPassword }}"
+            - name: "MYSQL_USER"
+              value: "{{ .Values.mysql.values.mysqlUser }}"
+            - name: "MYSQL_ROOT_PASSWORD"
+              value: "{{ .Values.mysql.values.mysqlRootPassword }}"
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+      volumes:
+        - name: mysql-pv
+          persistentVolumeClaim:
+            claimName: {{ .Values.mysql.persistentVolumeClaim }}
