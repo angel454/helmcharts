@@ -15,11 +15,11 @@ spec:
         app: {{ .Values.mysql.name }}
     spec:
       containers:
-        - name: {{ .Values.mysql.containerName }}
+        - name: mysql-db
           image: "{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}"
           volumeMounts:
             - mountPath: "/var/lib/mysql"
-              name: {{ .Values.mysql.persistentVolume }}
+              name: mysql-pv
           env:
             - name: "MYSQL_DATABASE"
               value: "{{ .Values.mysql.values.mysqlDatabase }}"
@@ -35,4 +35,4 @@ spec:
       volumes:
         - name: mysql-pv
           persistentVolumeClaim:
-            claimName: {{ .Values.mysql.persistentVolumeClaim }}
+            claimName: mysql-pvc

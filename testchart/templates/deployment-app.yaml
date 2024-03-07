@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.flaskApp.containerName }}
-          image: "{{ .Values.flaskApp.image.repository }}:{{ .Values.flaskApp.image.tag }}"
+          image: "amanez/flask-app:latest"
           env:
             - name: "FLASK_APP"
               value: "{{ .Values.flaskApp.values.flaskApp }}"
@@ -29,6 +29,6 @@ spec:
             - name: "MYSQL_PASSWORD"
               value: "{{ .Values.flaskApp.values.mysqlPassword }}"
             - name: "MYSQL_HOST"
-              value: "{{ .Values.flaskApp.values.mysqlHost }}"
+              value: "{{ .Values.mysql.containerName }}"
             - name: "MYSQL_DB"
               value: "{{ .Values.flaskApp.values.mysqlDatabase }}"

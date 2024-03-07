@@ -1,8 +1,7 @@
 mysql:
   name: mysql-db
   replicaCount: 1
-  containerName: mysql-container
-  persistentVolume: mysql-pv
+  containerName: mysql-db
   image:
     repository: mysql
     tag: "5.7"
@@ -11,20 +10,15 @@ mysql:
     mysqlPassword: patodegoma
     mysqlUser: patito
     mysqlRootPassword: root
-  persistentVolumeClaim: mysql-pvc
 
 flaskApp:
   name: flask-app
   replicaCount: 1
-  containerName: flask-container
-  image:
-    repository: amanez/flask-app
-    tag: latest
+  containerName: flask-app
   values:
     flaskApp: app.py
     flaskEnv: development
     flaskHost: 0.0.0.0
     mysqlUser: patito
     mysqlPassword: patodegoma
-    mysqlHost: mysql-db
     mysqlDatabase: mysql-database
